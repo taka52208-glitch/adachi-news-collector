@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>足立区ニュース収集ツール - デザインテーマ選択</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        /* Header */
+        .selector-header {
+            padding: 40px 20px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .selector-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .selector-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 14px 28px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(0, 255, 136, 0.2));
+            border-color: #00d9ff;
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .tab-btn .color-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Theme Container */
+        .theme-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .theme-panel {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .theme-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Theme Info Section */
+        .theme-info {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .theme-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .theme-description {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-description h2 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .theme-description p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .theme-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Color Palette */
+        .color-palette {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .color-palette h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .colors {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .color-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .color-info {
+            flex: 1;
+        }
+
+        .color-name {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .color-hex {
+            font-size: 0.9rem;
+            font-family: 'Inter', monospace;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .preview-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .preview-dot.red { background: #ff5f56; }
+        .preview-dot.yellow { background: #ffbd2e; }
+        .preview-dot.green { background: #27ca40; }
+
+        .preview-url {
+            flex: 1;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .preview-content {
+            height: 600px;
+            overflow: hidden;
+        }
+
+        /* Select Button */
+        .select-theme-btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 30px auto 0;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .select-theme-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ========================================
+           THEME 1: Professional Blue
+           ======================================== */
+        .theme1-preview {
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .theme1-nav {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            padding: 16px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(30, 58, 95, 0.3);
+        }
+
+        .theme1-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme1-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .theme1-logo-text {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .theme1-nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .theme1-nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .theme1-nav-link.active {
+            color: #fff;
+            border-bottom-color: #60a5fa;
+        }
+
+        .theme1-main {
+            padding: 30px;
+        }
+
+        .theme1-header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .theme1-title {
+            color: #1e3a5f;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .theme1-subtitle {
+            color: #64748b;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme1-update-badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .theme1-filter-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .theme1-filter-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .theme1-filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .theme1-chip {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .theme1-chip.active {
+            background: linear-gradient(135deg, #1e3a5f, #2d5a87);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 2px 8px rgba(30, 58, 95, 0.3);
+        }
+
+        .theme1-news-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .theme1-news-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .theme1-news-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(30, 58, 95, 0.15);
+            border-color: #3b82f6;
+        }
+
+        .theme1-news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .theme1-news-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .theme1-news-time {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .theme1-news-title {
+            font-size: 1rem;
+            color: #1e293b;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .theme1-news-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .theme1-news-keyword {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 10px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* ========================================
+           THEME 2: Modern Gradient
+           ======================================== */
+        .theme2-preview {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #252547 100%);
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #fff;
+        }
+
+        .theme2-nav {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            padding: 16px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .theme2-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme2-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8b5cf6, #d946ef);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .theme2-logo-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #8b5cf6, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .theme2-nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .theme2-nav-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .theme2-nav-link.active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(217, 70, 239, 0.2));
+            color: #fff;
+        }
+
+        .theme2-main {
+            padding: 30px;
+        }
+
+        .theme2-header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .theme2-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .theme2-subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .theme2-live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(16, 185, 129, 0.2));
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #4ade80;
+        }
+
+        .theme2-live-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .theme2-filter-section {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .theme2-chip {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme2-chip.active {
+            background: linear-gradient(135deg, #8b5cf6, #d946ef);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .theme2-news-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .theme2-news-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .theme2-news-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .theme2-news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .theme2-news-source {
+            font-size: 0.75rem;
+            color: #d946ef;
+            font-weight: 600;
+        }
+
+        .theme2-news-time {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .theme2-news-title {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .theme2-news-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.6;
+        }
+
+        .theme2-news-keyword {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 12px;
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+            border-radius: 8px;
+            font-size: 0.75rem;
+        }
+
+        /* ========================================
+           THEME 3: Natural Green
+           ======================================== */
+        .theme3-preview {
+            background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .theme3-nav {
+            background: #fff;
+            padding: 16px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 20px rgba(34, 197, 94, 0.1);
+            border-bottom: 3px solid #22c55e;
+        }
+
+        .theme3-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme3-logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .theme3-logo-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #166534;
+        }
+
+        .theme3-nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .theme3-nav-link {
+            color: #4b5563;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .theme3-nav-link.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .theme3-main {
+            padding: 30px;
+        }
+
+        .theme3-header-section {
+            background: #fff;
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .theme3-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #166534;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme3-title-icon {
+            font-size: 1.8rem;
+        }
+
+        .theme3-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .theme3-stat {
+            text-align: center;
+        }
+
+        .theme3-stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .theme3-stat-label {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .theme3-filter-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .theme3-filter-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme3-filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .theme3-chip {
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f0fdf4;
+            color: #166534;
+            border: 2px solid #bbf7d0;
+        }
+
+        .theme3-chip.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .theme3-news-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .theme3-news-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            border-left: 4px solid #22c55e;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .theme3-news-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.15);
+        }
+
+        .theme3-news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .theme3-news-source {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .theme3-news-time {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .theme3-news-title {
+            font-size: 1rem;
+            color: #1f2937;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .theme3-news-desc {
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .theme3-news-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .theme3-news-keyword {
+            padding: 4px 12px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .theme3-read-more {
+            font-size: 0.8rem;
+            color: #22c55e;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ========================================
+           THEME 4: Minimalist Mono
+           ======================================== */
+        .theme4-preview {
+            background: #ffffff;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .theme4-nav {
+            background: #fff;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .theme4-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme4-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: #111827;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .theme4-logo-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #111827;
+            letter-spacing: -0.5px;
+        }
+
+        .theme4-nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .theme4-nav-link {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .theme4-nav-link.active {
+            color: #111827;
+        }
+
+        .theme4-nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #111827;
+        }
+
+        .theme4-main {
+            padding: 40px 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .theme4-header-section {
+            margin-bottom: 40px;
+        }
+
+        .theme4-date {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .theme4-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #111827;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .theme4-filter-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .theme4-chip {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            color: #6b7280;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+        }
+
+        .theme4-chip.active {
+            background: #111827;
+            color: #fff;
+            border-color: #111827;
+        }
+
+        .theme4-news-grid {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .theme4-news-card {
+            padding: 25px 0;
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .theme4-news-card:hover {
+            padding-left: 20px;
+            background: #f9fafb;
+            margin: 0 -30px;
+            padding-right: 30px;
+            padding-left: 50px;
+        }
+
+        .theme4-news-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .theme4-news-source {
+            font-size: 0.8rem;
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .theme4-news-divider {
+            width: 4px;
+            height: 4px;
+            background: #d1d5db;
+            border-radius: 50%;
+        }
+
+        .theme4-news-time {
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+
+        .theme4-news-keyword {
+            font-size: 0.75rem;
+            color: #6b7280;
+            padding: 2px 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+        }
+
+        .theme4-news-title {
+            font-size: 1.15rem;
+            color: #111827;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .theme4-news-desc {
+            font-size: 0.9rem;
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        /* Button Styles for each theme */
+        .btn-theme1 {
+            background: linear-gradient(135deg, #1e3a5f, #2d5a87);
+            color: #fff;
+        }
+
+        .btn-theme1:hover {
+            background: linear-gradient(135deg, #2d5a87, #3b7ab8);
+        }
+
+        .btn-theme2 {
+            background: linear-gradient(135deg, #8b5cf6, #d946ef);
+            color: #fff;
+        }
+
+        .btn-theme2:hover {
+            background: linear-gradient(135deg, #a78bfa, #e879f9);
+        }
+
+        .btn-theme3 {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+        }
+
+        .btn-theme3:hover {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+        }
+
+        .btn-theme4 {
+            background: #111827;
+            color: #fff;
+        }
+
+        .btn-theme4:hover {
+            background: #374151;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="selector-header">
+        <h1>足立区ニュース収集ツール</h1>
+        <p>4つのデザインテーマから最適なものを選択してください</p>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-theme="1">
+            <span class="color-dot" style="background: linear-gradient(135deg, #1e3a5f, #3b82f6);"></span>
+            Theme 1: Professional Blue
+        </button>
+        <button class="tab-btn" data-theme="2">
+            <span class="color-dot" style="background: linear-gradient(135deg, #8b5cf6, #d946ef);"></span>
+            Theme 2: Modern Gradient
+        </button>
+        <button class="tab-btn" data-theme="3">
+            <span class="color-dot" style="background: linear-gradient(135deg, #22c55e, #16a34a);"></span>
+            Theme 3: Natural Green
+        </button>
+        <button class="tab-btn" data-theme="4">
+            <span class="color-dot" style="background: linear-gradient(135deg, #111827, #374151);"></span>
+            Theme 4: Minimalist Mono
+        </button>
+    </nav>
+
+    <!-- Theme Container -->
+    <div class="theme-container">
+        <!-- Theme 1: Professional Blue -->
+        <div class="theme-panel active" data-panel="1">
+            <div class="theme-info">
+                <div class="theme-description">
+                    <h2>Professional Blue - 信頼と専門性</h2>
+                    <p>
+                        濃紺を基調とした落ち着いた配色で、行政・ビジネス向けツールとしての信頼性と専門性を表現。
+                        クリーンなカードレイアウトと視認性の高いフィルター機能で、効率的な情報収集体験を提供します。
+                        クライアントに「しっかりしたシステム」という印象を与え、案件獲得に繋がる堅実なデザインです。
+                    </p>
+                    <div class="theme-tags">
+                        <span class="tag">信頼性</span>
+                        <span class="tag">専門性</span>
+                        <span class="tag">ビジネス向け</span>
+                        <span class="tag">視認性重視</span>
+                        <span class="tag">行政・自治体</span>
+                    </div>
+                </div>
+                <div class="color-palette">
+                    <h3>カラーパレット</h3>
+                    <div class="colors">
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #1e3a5f;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Primary</div>
+                                <div class="color-hex">#1E3A5F</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #3b82f6;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Accent</div>
+                                <div class="color-hex">#3B82F6</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #f8fafc;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Background</div>
+                                <div class="color-hex">#F8FAFC</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #1e293b;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Text</div>
+                                <div class="color-hex">#1E293B</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <div class="preview-header">
+                    <span class="preview-dot red"></span>
+                    <span class="preview-dot yellow"></span>
+                    <span class="preview-dot green"></span>
+                    <span class="preview-url">https://adachi-news.vercel.app</span>
+                </div>
+                <div class="preview-content">
+                    <div class="theme1-preview">
+                        <nav class="theme1-nav">
+                            <div class="theme1-logo">
+                                <div class="theme1-logo-icon">A</div>
+                                <span class="theme1-logo-text">足立区ニュース</span>
+                            </div>
+                            <div class="theme1-nav-links">
+                                <a href="#" class="theme1-nav-link active">ニュース一覧</a>
+                                <a href="#" class="theme1-nav-link">収集履歴</a>
+                            </div>
+                        </nav>
+                        <main class="theme1-main">
+                            <div class="theme1-header-section">
+                                <div>
+                                    <h1 class="theme1-title">本日の足立区ニュース</h1>
+                                    <p class="theme1-subtitle">
+                                        <span class="theme1-update-badge">更新済み</span>
+                                        最終更新: 2026年1月14日 09:00
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="theme1-filter-section">
+                                <div class="theme1-filter-label">キーワードで絞り込み</div>
+                                <div class="theme1-filter-chips">
+                                    <span class="theme1-chip active">すべて</span>
+                                    <span class="theme1-chip">足立区</span>
+                                    <span class="theme1-chip">北千住</span>
+                                    <span class="theme1-chip">竹ノ塚</span>
+                                    <span class="theme1-chip">西新井</span>
+                                    <span class="theme1-chip">綾瀬</span>
+                                </div>
+                            </div>
+                            <div class="theme1-news-grid">
+                                <div class="theme1-news-card">
+                                    <div class="theme1-news-header">
+                                        <span class="theme1-news-source">NHK NEWS WEB</span>
+                                        <span class="theme1-news-time">2時間前</span>
+                                    </div>
+                                    <h3 class="theme1-news-title">足立区で新しい子育て支援施設がオープン 地域住民から期待の声</h3>
+                                    <p class="theme1-news-desc">足立区は14日、区内に新しい子育て支援施設をオープンした。施設では一時預かりサービスや子育て相談などを提供し...</p>
+                                    <span class="theme1-news-keyword">足立区</span>
+                                </div>
+                                <div class="theme1-news-card">
+                                    <div class="theme1-news-header">
+                                        <span class="theme1-news-source">東京新聞</span>
+                                        <span class="theme1-news-time">4時間前</span>
+                                    </div>
+                                    <h3 class="theme1-news-title">北千住駅前再開発計画が進展 2027年完成目指す</h3>
+                                    <p class="theme1-news-desc">北千住駅西口の再開発事業について、足立区は具体的な計画案を発表。商業施設と住居の複合ビルを建設予定で...</p>
+                                    <span class="theme1-news-keyword">北千住</span>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            </div>
+
+            <button class="select-theme-btn btn-theme1" onclick="selectTheme(1)">
+                このテーマを選択する
+            </button>
+        </div>
+
+        <!-- Theme 2: Modern Gradient -->
+        <div class="theme-panel" data-panel="2">
+            <div class="theme-info">
+                <div class="theme-description">
+                    <h2>Modern Gradient - 先進性とインパクト</h2>
+                    <p>
+                        ダークテーマにパープル/マゼンタのグラデーションを組み合わせた、先進的でインパクトのあるデザイン。
+                        デモ時に「おっ」と思わせる視覚的なインパクトがあり、テック系・スタートアップ向けの印象を与えます。
+                        グラスモーフィズムとアニメーションで洗練された体験を提供し、AIツールとしての先進性をアピールできます。
+                    </p>
+                    <div class="theme-tags">
+                        <span class="tag">先進的</span>
+                        <span class="tag">インパクト</span>
+                        <span class="tag">テック系</span>
+                        <span class="tag">スタートアップ</span>
+                        <span class="tag">AI・自動化</span>
+                    </div>
+                </div>
+                <div class="color-palette">
+                    <h3>カラーパレット</h3>
+                    <div class="colors">
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #8b5cf6;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Primary</div>
+                                <div class="color-hex">#8B5CF6</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #d946ef;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Accent</div>
+                                <div class="color-hex">#D946EF</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #1a1a2e;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Background</div>
+                                <div class="color-hex">#1A1A2E</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #ffffff; border: 1px solid #333;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Text</div>
+                                <div class="color-hex">#FFFFFF</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <div class="preview-header">
+                    <span class="preview-dot red"></span>
+                    <span class="preview-dot yellow"></span>
+                    <span class="preview-dot green"></span>
+                    <span class="preview-url">https://adachi-news.vercel.app</span>
+                </div>
+                <div class="preview-content">
+                    <div class="theme2-preview">
+                        <nav class="theme2-nav">
+                            <div class="theme2-logo">
+                                <div class="theme2-logo-icon">A</div>
+                                <span class="theme2-logo-text">足立区ニュース</span>
+                            </div>
+                            <div class="theme2-nav-links">
+                                <a href="#" class="theme2-nav-link active">ニュース一覧</a>
+                                <a href="#" class="theme2-nav-link">収集履歴</a>
+                            </div>
+                        </nav>
+                        <main class="theme2-main">
+                            <div class="theme2-header-section">
+                                <h1 class="theme2-title">足立区の最新ニュース</h1>
+                                <p class="theme2-subtitle">AIが毎日自動で収集する地域情報</p>
+                                <div class="theme2-live-badge">
+                                    <span class="theme2-live-dot"></span>
+                                    本日 25件収集済み
+                                </div>
+                            </div>
+                            <div class="theme2-filter-section">
+                                <span class="theme2-chip active">すべて</span>
+                                <span class="theme2-chip">足立区</span>
+                                <span class="theme2-chip">北千住</span>
+                                <span class="theme2-chip">竹ノ塚</span>
+                                <span class="theme2-chip">西新井</span>
+                                <span class="theme2-chip">綾瀬</span>
+                            </div>
+                            <div class="theme2-news-grid">
+                                <div class="theme2-news-card">
+                                    <div class="theme2-news-header">
+                                        <span class="theme2-news-source">NHK NEWS WEB</span>
+                                        <span class="theme2-news-time">2時間前</span>
+                                    </div>
+                                    <h3 class="theme2-news-title">足立区で新しい子育て支援施設がオープン 地域住民から期待の声</h3>
+                                    <p class="theme2-news-desc">足立区は14日、区内に新しい子育て支援施設をオープンした。施設では一時預かりサービスや...</p>
+                                    <span class="theme2-news-keyword">足立区</span>
+                                </div>
+                                <div class="theme2-news-card">
+                                    <div class="theme2-news-header">
+                                        <span class="theme2-news-source">東京新聞</span>
+                                        <span class="theme2-news-time">4時間前</span>
+                                    </div>
+                                    <h3 class="theme2-news-title">北千住駅前再開発計画が進展 2027年完成目指す</h3>
+                                    <p class="theme2-news-desc">北千住駅西口の再開発事業について、足立区は具体的な計画案を発表。商業施設と住居の...</p>
+                                    <span class="theme2-news-keyword">北千住</span>
+                                </div>
+                                <div class="theme2-news-card">
+                                    <div class="theme2-news-header">
+                                        <span class="theme2-news-source">朝日新聞</span>
+                                        <span class="theme2-news-time">5時間前</span>
+                                    </div>
+                                    <h3 class="theme2-news-title">西新井大師で初詣客20万人 例年を上回る賑わい</h3>
+                                    <p class="theme2-news-desc">西新井大師では元日から3日間で約20万人の初詣客が訪れ、例年を上回る賑わいを見せた...</p>
+                                    <span class="theme2-news-keyword">西新井</span>
+                                </div>
+                                <div class="theme2-news-card">
+                                    <div class="theme2-news-header">
+                                        <span class="theme2-news-source">読売新聞</span>
+                                        <span class="theme2-news-time">6時間前</span>
+                                    </div>
+                                    <h3 class="theme2-news-title">竹ノ塚駅周辺の踏切が立体交差化 渋滞解消へ</h3>
+                                    <p class="theme2-news-desc">長年の課題だった竹ノ塚駅周辺の踏切問題が、立体交差化事業の完成により解消される見通しと...</p>
+                                    <span class="theme2-news-keyword">竹ノ塚</span>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            </div>
+
+            <button class="select-theme-btn btn-theme2" onclick="selectTheme(2)">
+                このテーマを選択する
+            </button>
+        </div>
+
+        <!-- Theme 3: Natural Green -->
+        <div class="theme-panel" data-panel="3">
+            <div class="theme-info">
+                <div class="theme-description">
+                    <h2>Natural Green - 親しみやすさと安心感</h2>
+                    <p>
+                        グリーンを基調とした明るく親しみやすいデザイン。地域密着型サービスとしての安心感と信頼感を表現。
+                        白を基調とした清潔感のある画面に、グリーンのアクセントで目に優しく長時間利用に適しています。
+                        自治体・地域サービス向けに最適で、幅広い年齢層に受け入れられやすいデザインです。
+                    </p>
+                    <div class="theme-tags">
+                        <span class="tag">親しみやすい</span>
+                        <span class="tag">安心感</span>
+                        <span class="tag">地域密着</span>
+                        <span class="tag">目に優しい</span>
+                        <span class="tag">幅広い年齢層</span>
+                    </div>
+                </div>
+                <div class="color-palette">
+                    <h3>カラーパレット</h3>
+                    <div class="colors">
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #22c55e;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Primary</div>
+                                <div class="color-hex">#22C55E</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #166534;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Accent</div>
+                                <div class="color-hex">#166534</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #f0fdf4;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Background</div>
+                                <div class="color-hex">#F0FDF4</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #1f2937;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Text</div>
+                                <div class="color-hex">#1F2937</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <div class="preview-header">
+                    <span class="preview-dot red"></span>
+                    <span class="preview-dot yellow"></span>
+                    <span class="preview-dot green"></span>
+                    <span class="preview-url">https://adachi-news.vercel.app</span>
+                </div>
+                <div class="preview-content">
+                    <div class="theme3-preview">
+                        <nav class="theme3-nav">
+                            <div class="theme3-logo">
+                                <div class="theme3-logo-icon">A</div>
+                                <span class="theme3-logo-text">足立区ニュース</span>
+                            </div>
+                            <div class="theme3-nav-links">
+                                <a href="#" class="theme3-nav-link active">ニュース一覧</a>
+                                <a href="#" class="theme3-nav-link">収集履歴</a>
+                            </div>
+                        </nav>
+                        <main class="theme3-main">
+                            <div class="theme3-header-section">
+                                <h1 class="theme3-title">
+                                    <span class="theme3-title-icon">A</span>
+                                    足立区ニュース
+                                </h1>
+                                <div class="theme3-stats">
+                                    <div class="theme3-stat">
+                                        <div class="theme3-stat-value">25</div>
+                                        <div class="theme3-stat-label">本日の記事</div>
+                                    </div>
+                                    <div class="theme3-stat">
+                                        <div class="theme3-stat-value">12</div>
+                                        <div class="theme3-stat-label">キーワード</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="theme3-filter-section">
+                                <div class="theme3-filter-label">
+                                    キーワードで絞り込み
+                                </div>
+                                <div class="theme3-filter-chips">
+                                    <span class="theme3-chip active">すべて</span>
+                                    <span class="theme3-chip">足立区</span>
+                                    <span class="theme3-chip">北千住</span>
+                                    <span class="theme3-chip">竹ノ塚</span>
+                                    <span class="theme3-chip">西新井</span>
+                                    <span class="theme3-chip">綾瀬</span>
+                                </div>
+                            </div>
+                            <div class="theme3-news-grid">
+                                <div class="theme3-news-card">
+                                    <div class="theme3-news-header">
+                                        <span class="theme3-news-source">NHK NEWS WEB</span>
+                                        <span class="theme3-news-time">2時間前</span>
+                                    </div>
+                                    <h3 class="theme3-news-title">足立区で新しい子育て支援施設がオープン 地域住民から期待の声</h3>
+                                    <p class="theme3-news-desc">足立区は14日、区内に新しい子育て支援施設をオープンした。施設では一時預かりサービスや子育て相談などを提供...</p>
+                                    <div class="theme3-news-footer">
+                                        <span class="theme3-news-keyword">足立区</span>
+                                        <span class="theme3-read-more">続きを読む</span>
+                                    </div>
+                                </div>
+                                <div class="theme3-news-card">
+                                    <div class="theme3-news-header">
+                                        <span class="theme3-news-source">東京新聞</span>
+                                        <span class="theme3-news-time">4時間前</span>
+                                    </div>
+                                    <h3 class="theme3-news-title">北千住駅前再開発計画が進展 2027年完成目指す</h3>
+                                    <p class="theme3-news-desc">北千住駅西口の再開発事業について、足立区は具体的な計画案を発表。商業施設と住居の複合ビルを建設予定で...</p>
+                                    <div class="theme3-news-footer">
+                                        <span class="theme3-news-keyword">北千住</span>
+                                        <span class="theme3-read-more">続きを読む</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            </div>
+
+            <button class="select-theme-btn btn-theme3" onclick="selectTheme(3)">
+                このテーマを選択する
+            </button>
+        </div>
+
+        <!-- Theme 4: Minimalist Mono -->
+        <div class="theme-panel" data-panel="4">
+            <div class="theme-info">
+                <div class="theme-description">
+                    <h2>Minimalist Mono - 洗練とシンプル</h2>
+                    <p>
+                        モノクロベースの究極にシンプルなデザイン。余計な装飾を排除し、コンテンツの可読性を最優先。
+                        ニュースメディア・新聞社のような洗練された印象で、情報の信頼性を視覚的に強調します。
+                        タイポグラフィを活かしたデザインで、長文でも読みやすく、集中力を維持しやすい構成です。
+                    </p>
+                    <div class="theme-tags">
+                        <span class="tag">シンプル</span>
+                        <span class="tag">洗練</span>
+                        <span class="tag">可読性重視</span>
+                        <span class="tag">メディア風</span>
+                        <span class="tag">タイポグラフィ</span>
+                    </div>
+                </div>
+                <div class="color-palette">
+                    <h3>カラーパレット</h3>
+                    <div class="colors">
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #111827;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Primary</div>
+                                <div class="color-hex">#111827</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #6b7280;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Secondary</div>
+                                <div class="color-hex">#6B7280</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #ffffff; border: 1px solid #e5e7eb;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Background</div>
+                                <div class="color-hex">#FFFFFF</div>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-swatch" style="background: #e5e7eb;"></div>
+                            <div class="color-info">
+                                <div class="color-name">Border</div>
+                                <div class="color-hex">#E5E7EB</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <div class="preview-header">
+                    <span class="preview-dot red"></span>
+                    <span class="preview-dot yellow"></span>
+                    <span class="preview-dot green"></span>
+                    <span class="preview-url">https://adachi-news.vercel.app</span>
+                </div>
+                <div class="preview-content">
+                    <div class="theme4-preview">
+                        <nav class="theme4-nav">
+                            <div class="theme4-logo">
+                                <div class="theme4-logo-icon" style="color: #fff;">A</div>
+                                <span class="theme4-logo-text">足立区ニュース</span>
+                            </div>
+                            <div class="theme4-nav-links">
+                                <a href="#" class="theme4-nav-link active">ニュース</a>
+                                <a href="#" class="theme4-nav-link">履歴</a>
+                            </div>
+                        </nav>
+                        <main class="theme4-main">
+                            <div class="theme4-header-section">
+                                <p class="theme4-date">2026年1月14日 火曜日</p>
+                                <h1 class="theme4-title">足立区の最新ニュース</h1>
+                            </div>
+                            <div class="theme4-filter-section">
+                                <span class="theme4-chip active">すべて</span>
+                                <span class="theme4-chip">足立区</span>
+                                <span class="theme4-chip">北千住</span>
+                                <span class="theme4-chip">竹ノ塚</span>
+                                <span class="theme4-chip">西新井</span>
+                                <span class="theme4-chip">綾瀬</span>
+                            </div>
+                            <div class="theme4-news-grid">
+                                <div class="theme4-news-card">
+                                    <div class="theme4-news-header">
+                                        <span class="theme4-news-source">NHK NEWS WEB</span>
+                                        <span class="theme4-news-divider"></span>
+                                        <span class="theme4-news-time">2時間前</span>
+                                        <span class="theme4-news-keyword">足立区</span>
+                                    </div>
+                                    <h3 class="theme4-news-title">足立区で新しい子育て支援施設がオープン 地域住民から期待の声</h3>
+                                    <p class="theme4-news-desc">足立区は14日、区内に新しい子育て支援施設をオープンした。施設では一時預かりサービスや子育て相談などを提供し、共働き世帯を中心に利用が見込まれている。</p>
+                                </div>
+                                <div class="theme4-news-card">
+                                    <div class="theme4-news-header">
+                                        <span class="theme4-news-source">東京新聞</span>
+                                        <span class="theme4-news-divider"></span>
+                                        <span class="theme4-news-time">4時間前</span>
+                                        <span class="theme4-news-keyword">北千住</span>
+                                    </div>
+                                    <h3 class="theme4-news-title">北千住駅前再開発計画が進展 2027年完成目指す</h3>
+                                    <p class="theme4-news-desc">北千住駅西口の再開発事業について、足立区は具体的な計画案を発表。商業施設と住居の複合ビルを建設予定で、地域の利便性向上が期待されている。</p>
+                                </div>
+                                <div class="theme4-news-card">
+                                    <div class="theme4-news-header">
+                                        <span class="theme4-news-source">朝日新聞</span>
+                                        <span class="theme4-news-divider"></span>
+                                        <span class="theme4-news-time">5時間前</span>
+                                        <span class="theme4-news-keyword">西新井</span>
+                                    </div>
+                                    <h3 class="theme4-news-title">西新井大師で初詣客20万人 例年を上回る賑わい</h3>
+                                    <p class="theme4-news-desc">西新井大師では元日から3日間で約20万人の初詣客が訪れ、例年を上回る賑わいを見せた。厄除けの祈願に訪れる人々で境内は終日混雑した。</p>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            </div>
+
+            <button class="select-theme-btn btn-theme4" onclick="selectTheme(4)">
+                このテーマを選択する
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const themePanels = document.querySelectorAll('.theme-panel');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const theme = btn.dataset.theme;
+
+                // Update active tab
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update active panel
+                themePanels.forEach(panel => {
+                    panel.classList.remove('active');
+                    if (panel.dataset.panel === theme) {
+                        panel.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Theme selection
+        function selectTheme(themeNumber) {
+            const themeNames = {
+                1: 'Professional Blue',
+                2: 'Modern Gradient',
+                3: 'Natural Green',
+                4: 'Minimalist Mono'
+            };
+
+            const confirmed = confirm(`「${themeNames[themeNumber]}」テーマを選択しますか？\n\n選択後、このテーマでフロントエンドを実装します。`);
+
+            if (confirmed) {
+                alert(`テーマ ${themeNumber}: ${themeNames[themeNumber]} が選択されました。\n\n開発者へ: 選択されたテーマ情報を docs/selected-theme.json に保存してください。`);
+
+                // Log selection for development
+                console.log('Selected Theme:', {
+                    number: themeNumber,
+                    name: themeNames[themeNumber],
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+    </script>
+</body>
+</html>
